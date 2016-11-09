@@ -25,8 +25,8 @@ class Menu{
 
 	public:
 		Menu();
-		Menu(char *name, char *name_items);
-		Menu(char *name, char *name_items, char *value_items);
+		Menu(char *name, char **name_items);
+		Menu(char *name, char **name_items, char **value_items);
 		~Menu();
 
 		void set_items(Item *items);

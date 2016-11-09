@@ -1,5 +1,7 @@
 #include "Menu.h"
 
+Menu::Item::Item(){}
+
 Menu::Item::Item(char *name, char *value, Menu *menu)
 {
 	Item::set_name_item(name);
@@ -41,7 +43,7 @@ Menu *Menu::Item::get_submenu()
 
 
 
-Menu::Menu(char *name, char *name_items)
+Menu::Menu(char *name, char **name_items)
 {
 	Menu::set_name_menu(name);
 	Item *items = new Item[sizeof(name_items)];
@@ -52,7 +54,7 @@ Menu::Menu(char *name, char *name_items)
 	Menu::set_items(items);
 	delete [] items;
 }
-Menu::Menu(char *name, char *name_items, char *value_items)
+Menu::Menu(char *name, char **name_items, char **value_items)
 {
 	Menu::Menu(name, name_items);
 	Item *items = get_items();
