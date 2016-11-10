@@ -8,7 +8,7 @@ Menu *current_menu;
 
 void setup()
 {
-	char *menu_strings[] = { "actions", "data", "setting" };
+	char *menu_strings[] = { "actions", "data", "settings" };
 	char *menu_name = "main menu";
 	current_menu = new Menu(menu_name, menu_strings);
 
@@ -41,14 +41,23 @@ void loop()
    		Serial.print(KB.getChar);
    		Serial.println("\"");
  	}
+
+ 	u8g.firstPage();  
+  	do {
+    	drawMenu();
+  	} while( u8g.nextPage() );
 }
 
 
-//TODO доделать отрисовку меню
+
+
+
 void drawMenu()
 {
 	uint8_t i, h;
   	u8g_uint_t w, d;
+
+  	Item *items = *current_menu.get_items();
 
   	u8g.setFont(u8g_font_6x13);
   	u8g.setFontRefHeightText();
@@ -56,13 +65,13 @@ void drawMenu()
   
   	h = u8g.getFontAscent()-u8g.getFontDescent();
   	w = u8g.getWidth();
-  	for( i = 0; i < 3; i++ ) {
-    	d = (w-u8g.getStrWidth(menu_strings[i]))/2;
-    	u8g.setDefaultForegroundColor();
-    	if ( i == menu_current ) {
-      	u8g.drawBox(0, i*h+1, w, h);
-      	u8g.setDefaultBackgroundColor();
-    	}
-    	u8g.drawStr(d, i*h, menu_strings[i]);
-  	}
+  	// for( i = 0; i < 3; i++ ) {
+   //  	d = (w-u8g.getStrWidth(menu_strings[i]))/2;
+   //  	u8g.setDefaultForegroundColor();
+   //  	if ( i == menu_current ) {
+   //    	u8g.drawBox(0, i*h+1, w, h);
+   //    	u8g.setDefaultBackgroundColor();
+   //  	}
+   //  	u8g.drawStr(d, i*h, menu_strings[i]);
+  	// }
 }

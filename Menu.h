@@ -34,6 +34,10 @@ class Menu{
 
 		void set_name_menu(char *name);
 		char *get_name_menu();
+
+		char **get_name_items();
+		char **get_value_items();
+		Menu *get_submenu_item();
 	private:
 		Item *items;
 		char *name_menu;

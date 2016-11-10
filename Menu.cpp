@@ -87,3 +87,11 @@ char *Menu::get_name_menu()
 {
 	return name_menu;
 }
+
+char **get_name_items()
+{
+	char *name_items[]
+}
+
+char **get_value_items();
+Menu *get_submenu_item();
