@@ -4,27 +4,27 @@
 
 U8GLIB_ST7920_128X64_4X u8g(28, 30, 32, 34, 36, 38, 40, 42, 26, 22, 24);   // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7 en=18, di=17,rw=16
 AmperkaKB KB(13, 12, 11, 10, 7, 6, 5, 4);// создаём объект для работы с матричной клавиатурой
+// Menu *current_menu = malloc( sizeof(Menu) );
 Menu *current_menu;
 
 void setup()
 {
-	char *menu_strings[] = { "actions", "data", "settings" };
-	char *menu_name = "main menu";
-	current_menu = new Menu(menu_name, menu_strings);
+	// открываем монитор Serial порта
+ 	Serial.begin(9600);
 
+
+	char *menu_strings[] = { "actions", "data", "settings" };
+	
+	current_menu = new Menu("main menu", menu_strings);
+	char *menu_name = current_menu->get_name_menu();
+	Serial.println(menu_name);
 
 	delete [] menu_strings;
  	delete menu_name;
 
-
-
-	// открываем монитор Serial порта
- 	Serial.begin(9600);
  	// указываем тип клавиатуры
  	KB.begin(KB4x4);
 
-	Serial.println(current_menu->get_name_menu());
- 	
 }
 
 void loop()

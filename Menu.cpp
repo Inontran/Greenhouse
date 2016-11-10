@@ -1,5 +1,7 @@
 #include "Menu.h"
 
+Menu::Menu(){}
+
 Menu::Menu(char *name, char **name_items)
 {
 	Menu::set_name_menu(name);
@@ -8,7 +10,8 @@ Menu::Menu(char *name, char **name_items)
 }
 Menu::Menu(char *name, char **name_items, char **value_items)
 {
-	Menu::Menu(name, name_items);
+	Menu::set_name_menu(name);
+	Menu::set_name_items(name_items);
 	Menu::set_value_items(value_items);
 }
 
