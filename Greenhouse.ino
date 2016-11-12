@@ -6,6 +6,8 @@ U8GLIB_ST7920_128X64_4X u8g(28, 30, 32, 34, 36, 38, 40, 42, 26, 22, 24);   // 8B
 AmperkaKB KB(13, 12, 11, 10, 7, 6, 5, 4);// создаём объект для работы с матричной клавиатурой
 Menu *current_menu;
 int current_menu_item = 1;
+int number_items = 1;
+char **menu_strings = new char *[number_items];
 
 void setup()
 {
@@ -13,16 +15,15 @@ void setup()
  	Serial.begin(9600);
 
 
-	char *menu_strings[] = { "actions", "data", "settings" };
-	current_menu = new Menu("main menu", menu_strings);
-	// current_menu = new Menu();
-	// current_menu->set_name_menu("main menu");
+	char *menu_name_items[] = { "actions", "data", "settings" };
+	current_menu = new Menu("main menu", 3, menu_name_items);
+	number_items = current_menu->get_number_items();
+	menu_strings = current_menu->get_name_items();
 
-	// Serial.println(current_menu->get_name_menu());
-	Serial.println( sizeof(current_menu->get_name_items() ) );
-	// menu_strings = current_menu->get_name_items();
+	Serial.println(current_menu->get_name_items()[1] );
+	Serial.println( current_menu->get_number_items() );
 
-	delete [] menu_strings;
+	delete [] menu_name_items;
 }
 
 void loop()
@@ -57,10 +58,10 @@ void drawMenu()
 
 	//print menu items on LCD
 	//печать на дисплей пунктов меню
-	char **menu_strings = new char *[sizeof(current_menu->get_name_items())/2];
-	menu_strings = current_menu->get_name_items();
+	// char **menu_strings = new char *[number_items];
+	// menu_strings = current_menu->get_name_items();
 	// char *menu_strings[] = { "actions", "data", "settings" };
-  	for( i = 0; i < sizeof( menu_strings ) /2; i++ ) 
+  	for( i = 0; i < number_items; i++ ) 
   	{
     	u8g.setDefaultForegroundColor();
     	if ( i+1 == current_menu_item ) {

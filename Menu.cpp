@@ -2,15 +2,17 @@
 
 Menu::Menu(){}
 
-Menu::Menu(char *name, char **name_items)
+Menu::Menu(char *name, int number, char **name_items)
 {
 	Menu::set_name_menu(name);
+	Menu::set_number_items(number);
 	Menu::set_name_items(name_items);
 	
 }
-Menu::Menu(char *name, char **name_items, char **value_items)
+Menu::Menu(char *name, int number, char **name_items, char **value_items)
 {
 	Menu::set_name_menu(name);
+	Menu::set_number_items(number);
 	Menu::set_name_items(name_items);
 	Menu::set_value_items(value_items);
 }
@@ -42,7 +44,11 @@ void Menu::set_name_items(char **strings)
 char **Menu::get_name_items()
 {
 	// return Menu::name_items;
-	char *menu_strings[] = { "actions", "data", "settings" };
+	// char *menu_strings[] = { "actions", "data", "settings" };
+	char **menu_strings = new char *[3];
+	menu_strings[0] = "actions";
+	menu_strings[1] = "data";
+	menu_strings[2] = "settings";
 	return menu_strings;
 }
 
@@ -57,6 +63,8 @@ char **Menu::get_value_items()
 	return Menu::value_items;
 }
 
+
+
 void Menu::set_submenu(Menu *menu)
 {
 	**Menu::submenu = *menu;
@@ -65,4 +73,14 @@ void Menu::set_submenu(Menu *menu)
 Menu **Menu::get_submenu_item()
 {
 	return Menu::submenu;
+}
+
+
+void Menu::set_number_items(int number)
+{
+	Menu::number_items = number;
+}
+int Menu::get_number_items()
+{
+	return Menu::number_items;
 }

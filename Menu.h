@@ -5,8 +5,8 @@
 class Menu{
 	public:
 		Menu();
-		Menu(char *name, char **name_items);
-		Menu(char *name, char **name_items, char **value_items);
+		Menu(char *name, int number, char **name_items);
+		Menu(char *name, int number, char **name_items, char **value_items);
 		~Menu();
 
 		//getters and setters
@@ -22,7 +22,11 @@ class Menu{
 
 		void set_submenu(Menu *menu);
 		Menu **get_submenu_item();
+
+		void set_number_items(int number);
+		int get_number_items();
 	private:
+		int number_items;
 		char **name_items;
 		char **value_items;
 		Menu **submenu;
