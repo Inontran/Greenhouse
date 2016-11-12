@@ -14,17 +14,17 @@ class Menu{
 		void set_name_menu(char *name);
 		char *get_name_menu();
 
-		void set_name_items(char **values);
+		void set_name_items(char **strings);
 		char **get_name_items();
 
-		void set_value_items(char **values);
+		void set_value_items(char **strings);
 		char **get_value_items();
 
 		void set_submenu(Menu *menu);
-		Menu *get_submenu_item();
+		Menu **get_submenu_item();
 	private:
 		char **name_items;
 		char **value_items;
-		Menu *submenu;
+		Menu **submenu;
 		char *name_menu;
 };

@@ -22,41 +22,47 @@ Menu::~Menu(){}
 //геттеры и сеттеры
 void Menu::set_name_menu(char *name)
 {
-	*Menu::name_menu = *name;
+	Menu::name_menu = name;
+	// *Menu::name_menu = "main menu";
+	// *Menu::name_menu = new char("main menu");
+	// *Menu::name_menu = new char(name);
 }
-
 char *Menu::get_name_menu()
 {
-	return *Menu::name_menu;
+	return Menu::name_menu;
+	// return "main menu";
 }
 
-void Menu::set_name_items(char **values)
+
+
+void Menu::set_name_items(char **strings)
 {
-	**Menu::name_items = **values;
+	Menu::name_items = strings;
 }
-
 char **Menu::get_name_items()
 {
-	return **Menu::name_items;
+	// return Menu::name_items;
+	char *menu_strings[] = { "actions", "data", "settings" };
+	return menu_strings;
 }
 
 
-void Menu::set_value_items(char **values)
+
+void Menu::set_value_items(char **strings)
 {
-	**Menu::value_items = **values;
+	**Menu::value_items = strings;
 }
-
 char **Menu::get_value_items()
 {
-	return **Menu::value_items;
+	return Menu::value_items;
 }
 
 void Menu::set_submenu(Menu *menu)
 {
-	*Menu::submenu = *menu;
+	**Menu::submenu = *menu;
 }
 
-Menu *Menu::get_submenu_item()
+Menu **Menu::get_submenu_item()
 {
 	return Menu::submenu;
 }
