@@ -5,14 +5,14 @@ Menu::Menu(){}
 Menu::Menu(char *name, int number, char **name_items)
 {
 	Menu::set_name_menu(name);
-	Menu::set_number_items(number);
+	Menu::set_amount_items(number);
 	Menu::set_name_items(name_items);
 	
 }
 Menu::Menu(char *name, int number, char **name_items, char **value_items)
 {
 	Menu::set_name_menu(name);
-	Menu::set_number_items(number);
+	Menu::set_amount_items(number);
 	Menu::set_name_items(name_items);
 	Menu::set_value_items(value_items);
 }
@@ -76,11 +76,11 @@ Menu **Menu::get_submenu_item()
 }
 
 
-void Menu::set_number_items(int number)
+void Menu::set_amount_items(int number)
 {
-	Menu::number_items = number;
+	Menu::amount_items = number;
 }
-int Menu::get_number_items()
+int Menu::get_amount_items()
 {
-	return Menu::number_items;
+	return Menu::amount_items;
 }

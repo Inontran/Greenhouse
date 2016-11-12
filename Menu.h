@@ -23,10 +23,10 @@ class Menu{
 		void set_submenu(Menu *menu);
 		Menu **get_submenu_item();
 
-		void set_number_items(int number);
-		int get_number_items();
+		void set_amount_items(int number);
+		int get_amount_items();
 	private:
-		int number_items;
+		int amount_items;
 		char **name_items;
 		char **value_items;
 		Menu **submenu;
