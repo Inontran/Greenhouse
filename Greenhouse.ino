@@ -8,7 +8,7 @@ AmperkaKB KB(13, 12, 11, 10, 7, 6, 5, 4);// создаём объект для �
 Menu *current_menu;
 int current_number_menu_item = 1;
 int amount_items = 1;
-char **menu_strings = new char *[amount_items];
+char **menu_strings;
 
 
 
@@ -18,15 +18,22 @@ void setup()
 	Serial.begin(9600);
 
  	//блок инициализации меню
- 	//block of initialization menu
  	{
- 		//current menu
+ 		//главное меню
  		char *menu_name_items[] = { "actions", "data", "settings" };
  		current_menu = new Menu("main menu", 3, menu_name_items);
  		amount_items = current_menu->get_amount_items();
  		menu_strings = current_menu->get_name_items();
 
-		//submenus
+ 		Serial.println(menu_strings[0]);
+		
+		//остальные подменю
+		char *menu_name_items2[] = { "mist maker", "lightning" };
+		char *menu_value_items[] = {"OFF", "OFF"};
+ 		Menu *summenu = new Menu("actions", 2, menu_name_items2, menu_value_items);
+
+
+		
 
 		delete [] menu_name_items;
 	}
@@ -47,18 +54,28 @@ void loop()
     	Serial.println("\"");
     	
     	switch (KB.getChar) {
+    	    //вверх
     	    case 'A':
     	    	if(current_number_menu_item == 1) current_number_menu_item = amount_items;
     	    	else current_number_menu_item--;
     	    	break;
+    	    //вниз
     	    case 'B':
     	    	if(current_number_menu_item == amount_items) current_number_menu_item = 1;
     	    	else current_number_menu_item++;
     	     	break;
+    	     //отмена или назад
+    	    case 'C' :
+
+    	    	break;
+    	    //ок
+    	    case 'D' :
+
+    	    	break;
     	}
 	}
 
-	//draw menu and other data
+	//печать меню и данных на дисплее
 	u8g.firstPage();  
 	do {
 		drawMenu();
@@ -81,13 +98,11 @@ void drawMenu()
 	h = u8g.getFontAscent()-u8g.getFontDescent();
 	w = u8g.getWidth();
 
-	//print name menu on the top LCD
 	//печать вверху дисплея названия меню
 	d = (w-u8g.getStrWidth(current_menu->get_name_menu()))/2;
 	u8g.setDefaultForegroundColor();
 	u8g.drawStr(d, 0, current_menu->get_name_menu());
 
-	//print menu items on LCD
 	//печать на дисплей пунктов меню
 	// char **menu_strings = new char *[number_items];
 	// menu_strings = current_menu->get_name_items();

@@ -9,7 +9,6 @@ class Menu{
 		Menu(char *name, int number, char **name_items, char **value_items);
 		~Menu();
 
-		//getters and setters
 		//геттеры и сеттеры
 		void set_name_menu(char *name);
 		char *get_name_menu();

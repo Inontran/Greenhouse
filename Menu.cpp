@@ -20,19 +20,14 @@ Menu::Menu(char *name, int number, char **name_items, char **value_items)
 Menu::~Menu(){}
 
 
-//getters and setters
 //геттеры и сеттеры
 void Menu::set_name_menu(char *name)
 {
 	Menu::name_menu = name;
-	// *Menu::name_menu = "main menu";
-	// *Menu::name_menu = new char("main menu");
-	// *Menu::name_menu = new char(name);
 }
 char *Menu::get_name_menu()
 {
 	return Menu::name_menu;
-	// return "main menu";
 }
 
 
@@ -43,13 +38,13 @@ void Menu::set_name_items(char **strings)
 }
 char **Menu::get_name_items()
 {
-	// return Menu::name_items;
+	return Menu::name_items;
 	// char *menu_strings[] = { "actions", "data", "settings" };
-	char **menu_strings = new char *[3];
-	menu_strings[0] = "actions";
-	menu_strings[1] = "data";
-	menu_strings[2] = "settings";
-	return menu_strings;
+	// char **menu_strings = new char *[3];
+	// menu_strings[0] = "actions";
+	// menu_strings[1] = "data";
+	// menu_strings[2] = "settings";
+	// return menu_strings;
 }
 
 
