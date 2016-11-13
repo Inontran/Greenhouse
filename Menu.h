@@ -9,25 +9,18 @@ class Menu{
 		Menu(char *name, int number, char **name_items, char **value_items);
 		~Menu();
 
-		//геттеры и сеттеры
-		void set_name_menu(char *name);
+		//геттеры
 		char *get_name_menu();
-
-		void set_name_items(char **strings);
 		char **get_name_items();
-
-		void set_value_items(char **strings);
 		char **get_value_items();
-
-		void set_submenu(Menu *menu);
-		Menu **get_submenu_item();
-
-		void set_amount_items(int number);
+		Menu **get_submenus();
 		int get_amount_items();
+
+		void add_submenu(Menu *new_submenu, int number_item);
 	private:
 		int amount_items;
 		char **name_items;
 		char **value_items;
-		Menu **submenu;
+		Menu **submenus;
 		char *name_menu;
 };

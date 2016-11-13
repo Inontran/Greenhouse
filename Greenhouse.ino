@@ -7,7 +7,7 @@ AmperkaKB KB(13, 12, 11, 10, 7, 6, 5, 4);// создаём объект для �
 
 Menu *current_menu;
 int current_number_menu_item = 1;
-int amount_items = 1;
+int amount_items;
 // char **menu_strings;
 
 
@@ -18,23 +18,6 @@ void setup()
 	Serial.begin(9600);
 
  	//блок инициализации меню
- 	{
- 		//главное меню
- 		char *menu_name_items[] = { "actions", "data", "settings" };
- 		current_menu = new Menu("main menu", 3, menu_name_items);
- 		amount_items = current_menu->get_amount_items();
- 		// menu_strings = current_menu->get_name_items();
- 		delete [] menu_name_items;
-		
-		//остальные подменю
-		**menu_name_items = new char *[2];
-		menu_name_items = { "mist maker", "lightning" };
-		char *menu_value_items[] = {"OFF", "OFF"};
- 		Menu *summenu = new Menu("actions", 2, menu_name_items, menu_value_items);
-		
-
-		delete [] menu_name_items;
-	}
 
 	// указываем тип клавиатуры
 	KB.begin(KB4x4);
@@ -81,7 +64,50 @@ void loop()
 }
 
 
+void initMenu()
+{
+	char **menu_name_items;
+	char **menu_value_items;
+	Menu *submenu;
+ 	//главное меню
+ 	amount_items = 3;
+ 	**menu_name_items = new char *[amount_items];
+ 	menu_name_items[0] = "actions";
+ 	menu_name_items[1] = "data";
+ 	menu_name_items[2] = "settings";
+ 	current_menu = new Menu("main menu", amount_items, menu_name_items);
+ 	// menu_strings = current_menu->get_name_items();
+ 	delete [] menu_name_items;
 
+	//остальные подменю
+	amount_items = 2;
+	**menu_name_items = new char *[amount_items];
+	menu_name_items[0] = "mist maker";
+	menu_name_items[1] = "lightning";
+	**menu_value_items = new char *[amount_items];
+	menu_value_items[0] = "OFF";
+	menu_value_items[1] = "OFF";
+	submenu = new Menu("actions", amount_items, menu_name_items, menu_value_items);
+	delete [] menu_name_items;
+	delete [] menu_value_items;
+	delete submenu;
+
+	amount_items = 2;
+	**menu_name_items = new char *[amount_items];
+	menu_name_items[0] = "t1";
+	menu_name_items[1] = "t2";
+	**menu_value_items = new char *[amount_items];
+	menu_value_items[0] = "20";
+	menu_value_items[1] = "22";
+	submenu = new Menu("data", amount_items, menu_name_items, menu_value_items);
+	delete [] menu_name_items;
+	delete [] menu_value_items;
+	delete submenu;
+
+	// current_menu->set_submenu();
+
+	amount_items = current_menu->get_amount_items();
+}
 
 
 void drawMenu()
