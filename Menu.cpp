@@ -1,20 +1,30 @@
 #include "Menu.h"
 
-Menu::Menu(){}
+// Menu::Menu(){}
 
 Menu::Menu(char *name, int number, char **name_items)
 {
 	Menu::set_name_menu(name);
 	Menu::set_amount_items(number);
-	Menu::set_name_items(name_items);
+	// Menu::set_name_items(name_items);
+	Menu::name_items = new char *[number];
+	for(int i=0; i<number; i++) Menu::name_items[i] = name_items[i];
 	
 }
 Menu::Menu(char *name, int number, char **name_items, char **value_items)
 {
 	Menu::set_name_menu(name);
 	Menu::set_amount_items(number);
-	Menu::set_name_items(name_items);
-	Menu::set_value_items(value_items);
+	// Menu::set_name_items(name_items);
+	// Menu::set_value_items(value_items);
+	Menu::name_items = new char *[number];
+	Menu::value_items = new char *[number];
+	for(int i=0; i<number; i++) 
+	{
+		Menu::name_items[i] = name_items[i];
+		Menu::value_items[i] = value_items[i];
+	}
+	
 }
 
 Menu::~Menu(){}

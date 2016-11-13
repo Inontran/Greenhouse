@@ -4,7 +4,7 @@
 
 class Menu{
 	public:
-		Menu();
+		// Menu();
 		Menu(char *name, int number, char **name_items);
 		Menu(char *name, int number, char **name_items, char **value_items);
 		~Menu();
