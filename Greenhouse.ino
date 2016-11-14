@@ -79,8 +79,8 @@ void init_menu()
 	menu_name_items[0] = "mist maker";
 	menu_name_items[1] = "lightning";
 	menu_value_items = new char *[amount_items];
-	menu_value_items[0] = "OFF";
-	menu_value_items[1] = "OFF";
+	menu_value_items[0] = "off";
+	menu_value_items[1] = "off";
 	submenu = new Menu("actions", amount_items, menu_name_items, menu_value_items);
 	current_menu->add_submenu(submenu, 1);
 	delete [] menu_name_items;
@@ -100,8 +100,6 @@ void init_menu()
 	delete [] menu_value_items;
 	delete submenu;
 
-	Menu *new_current_menu = current_menu->get_submenu()[2];
-	Serial.println(new_current_menu->get_amount_items());
 	amount_items = current_menu->get_amount_items();
 }
 
@@ -132,5 +130,6 @@ void drawMenu()
 			u8g.setDefaultBackgroundColor();
 		}
 		u8g.drawStr(5, (i+1)*h, current_menu->get_name_items()[i]);
+		u8g.drawStr(w - u8g.getStrWidth(current_menu->get_value_items()[i]), (i+1)*h, current_menu->get_value_items()[i]);
 	}
 }
