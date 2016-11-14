@@ -8,16 +8,13 @@ AmperkaKB KB(13, 12, 11, 10, 7, 6, 5, 4);// создаём объект для �
 Menu *current_menu;
 int current_number_menu_item = 1;
 int amount_items;
-// char **menu_strings;
-
 
 
 void setup()
 {
 	// открываем монитор Serial порта
 	Serial.begin(9600);
-
- 	//блок инициализации меню
+	init_menu();
 
 	// указываем тип клавиатуры
 	KB.begin(KB4x4);
@@ -27,13 +24,6 @@ void loop()
 {
 	// определяем нажатие кнопки
 	if (KB.onPress()) {
-    	// печатаем номер кнопки и её символ в последовательный порт
-    	Serial.print("Key is press ");
-    	Serial.print(KB.getNum);
-    	Serial.print(" = \"");
-    	Serial.print(KB.getChar);
-    	Serial.println("\"");
-    	
     	switch (KB.getChar) {
     	    //вверх
     	    case 'A':
@@ -51,7 +41,11 @@ void loop()
     	    	break;
     	    //ок
     	    case 'D' :
-
+    	    	// if(current_menu->get_submenu()[current_number_menu_item] != null){
+    	    	//     current_menu = current_menu->get_submenu()[current_number_menu_item];
+    	    	// }
+    	    	current_menu = current_menu->get_submenu()[current_number_menu_item-1];
+    	    	amount_items = current_menu->get_amount_items();
     	    	break;
     	}
 	}
@@ -63,49 +57,51 @@ void loop()
 	} while( u8g.nextPage() );
 }
 
-
-void initMenu()
+//инициализация меню
+void init_menu()
 {
 	char **menu_name_items;
 	char **menu_value_items;
 	Menu *submenu;
  	//главное меню
  	amount_items = 3;
- 	**menu_name_items = new char *[amount_items];
+ 	menu_name_items = new char *[amount_items];
  	menu_name_items[0] = "actions";
  	menu_name_items[1] = "data";
  	menu_name_items[2] = "settings";
  	current_menu = new Menu("main menu", amount_items, menu_name_items);
- 	// menu_strings = current_menu->get_name_items();
  	delete [] menu_name_items;
+
 
 	//остальные подменю
 	amount_items = 2;
-	**menu_name_items = new char *[amount_items];
+	menu_name_items = new char *[amount_items];
 	menu_name_items[0] = "mist maker";
 	menu_name_items[1] = "lightning";
-	**menu_value_items = new char *[amount_items];
+	menu_value_items = new char *[amount_items];
 	menu_value_items[0] = "OFF";
 	menu_value_items[1] = "OFF";
 	submenu = new Menu("actions", amount_items, menu_name_items, menu_value_items);
+	current_menu->add_submenu(submenu, 1);
 	delete [] menu_name_items;
 	delete [] menu_value_items;
 	delete submenu;
 
 	amount_items = 2;
-	**menu_name_items = new char *[amount_items];
+	menu_name_items = new char *[amount_items];
 	menu_name_items[0] = "t1";
 	menu_name_items[1] = "t2";
-	**menu_value_items = new char *[amount_items];
+	menu_value_items = new char *[amount_items];
 	menu_value_items[0] = "20";
 	menu_value_items[1] = "22";
 	submenu = new Menu("data", amount_items, menu_name_items, menu_value_items);
+	current_menu->add_submenu(submenu, 2);
 	delete [] menu_name_items;
 	delete [] menu_value_items;
 	delete submenu;
 
-	// current_menu->set_submenu();
-
+	Menu *new_current_menu = current_menu->get_submenu()[2];
+	Serial.println(new_current_menu->get_amount_items());
 	amount_items = current_menu->get_amount_items();
 }
 
@@ -128,9 +124,6 @@ void drawMenu()
 	u8g.drawStr(d, 0, current_menu->get_name_menu());
 
 	//печать на дисплей пунктов меню
-	// char **menu_strings = new char *[number_items];
-	// menu_strings = current_menu->get_name_items();
-	// char *menu_strings[] = { "actions", "data", "settings" };
 	for( i = 0; i < amount_items; i++ ) 
 	{
 		u8g.setDefaultForegroundColor();

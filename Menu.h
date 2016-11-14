@@ -13,14 +13,15 @@ class Menu{
 		char *get_name_menu();
 		char **get_name_items();
 		char **get_value_items();
-		Menu **get_submenus();
+		Menu **get_submenu();
 		int get_amount_items();
 
-		void add_submenu(Menu *new_submenu, int number_item);
+		void add_submenu(Menu *submenu, int number_item);
 	private:
 		int amount_items;
 		char **name_items;
 		char **value_items;
-		Menu **submenus;
+		Menu **submenu;
+		// Menu *parent_menu;
 		char *name_menu;
 };
