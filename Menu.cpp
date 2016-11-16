@@ -13,6 +13,7 @@ Menu::Menu(char *name, int number, char **name_items)
 	{
 		Menu::name_items[i] = name_items[i];
 		Menu::value_items[i] = "";
+		Menu::submenu[i] = NULL;
 	}
 	
 }
@@ -26,6 +27,7 @@ Menu::Menu(char *name, int number, char **name_items, char **value_items)
 	{
 		Menu::name_items[i] = name_items[i];
 		Menu::value_items[i] = value_items[i];
+		Menu::submenu[i] = NULL;
 	}
 }
 
@@ -65,6 +67,13 @@ Menu *Menu::get_parent_menu()
 }
 
 
+void Menu::set_parent_menu(Menu *menu)
+{
+	if(menu == NULL) Menu::parent_menu = NULL;
+	else {
+		Menu::parent_menu = new Menu(menu->get_name_menu(), menu->get_amount_items(), menu->get_name_items(), menu->get_value_items());
+	}
+}
 
 void Menu::add_submenu(Menu *submenu, int number_item)
 {

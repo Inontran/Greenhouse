@@ -1,6 +1,4 @@
-// #include <Item.h>
-// using namespace std;
-
+#define NULL (void*)0
 
 class Menu{
 	public:
@@ -17,6 +15,7 @@ class Menu{
 		int get_amount_items();
 		Menu *get_parent_menu();
 
+		void set_parent_menu(Menu *menu);
 		void add_submenu(Menu *submenu, int number_item);
 	private:
 		int amount_items;
