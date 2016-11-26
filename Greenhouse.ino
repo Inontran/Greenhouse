@@ -47,11 +47,15 @@ void loop()
     	    	break;
     	    //ок
     	    case 'D' :
-    	    	if(current_menu->get_submenu()[current_number_menu_item] != NULL){
-    	    		current_menu = current_menu->get_submenu()[current_number_menu_item-1];
+    	    	if(current_menu->get_submenu(current_number_menu_item - 1) != NULL){
+    	    		current_menu = current_menu->get_submenu(current_number_menu_item - 1);
     	    		amount_items = current_menu->get_amount_items();
     	    		current_number_menu_item = 1;
     	    	} else{}//включение чего-либо или изменение настроек/значенией
+    	    	// Serial.println(current_menu->get_submenu()[current_number_menu_item-1] == NULL);
+    	    	// current_menu = current_menu->get_submenu()[current_number_menu_item-1];
+    	    	// amount_items = current_menu->get_amount_items();
+    	    	// current_number_menu_item = 1;
     	    	break;
     	}
 	}
@@ -84,12 +88,11 @@ void init_menu()
 	menu_name_items = new char *[amount_items];
 	menu_name_items[0] = "mist maker";
 	menu_name_items[1] = "lightning";
-	menu_value_items = new char *[amount_items];
 	//здесь будет инициализация значений
+	menu_value_items = new char *[amount_items];
 	menu_value_items[0] = "off";
 	menu_value_items[1] = "off";
 	submenu = new Menu("actions", amount_items, menu_name_items, menu_value_items);
-	submenu->set_parent_menu(current_menu);
 	current_menu->add_submenu(submenu, 1);
 	delete [] menu_name_items;
 	delete [] menu_value_items;
@@ -103,7 +106,6 @@ void init_menu()
 	menu_value_items[0] = "20";
 	menu_value_items[1] = "22";
 	submenu = new Menu("data", amount_items, menu_name_items, menu_value_items);
-	submenu->set_parent_menu(current_menu);
 	current_menu->add_submenu(submenu, 2);
 	delete [] menu_name_items;
 	delete [] menu_value_items;

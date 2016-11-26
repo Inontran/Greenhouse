@@ -11,17 +11,17 @@ class Menu{
 		char *get_name_menu();
 		char **get_name_items();
 		char **get_value_items();
-		Menu **get_submenu();
+		Menu *get_submenu(int number);
 		int get_amount_items();
 		Menu *get_parent_menu();
 
-		void set_parent_menu(Menu *menu);
+		// void set_parent_menu(Menu *menu);
 		void add_submenu(Menu *submenu, int number_item);
 	private:
 		int amount_items;
 		char **name_items;
 		char **value_items;
 		Menu **submenu;
-		Menu *parent_menu;
+		Menu *parent_menu = NULL;
 		char *name_menu;
 };
