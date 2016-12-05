@@ -17,6 +17,7 @@ class Menu{
 
 		// void set_parent_menu(Menu *menu);
 		void add_submenu(Menu *submenu, int number_item);
+		void set_value_items(char *new_value, int number_item);
 	private:
 		int amount_items;
 		char **name_items;

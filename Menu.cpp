@@ -55,7 +55,7 @@ char **Menu::get_value_items()
 
 Menu *Menu::get_submenu(int number)
 {
-	return Menu::submenu[number];
+	return Menu::submenu[number-1];
 }
 
 int Menu::get_amount_items()
@@ -81,4 +81,9 @@ void Menu::add_submenu(Menu *submenu, int number_item)
 {
  	Menu::submenu[number_item-1] = new Menu(submenu->get_name_menu(), submenu->get_amount_items(), submenu->get_name_items(), submenu->get_value_items());
  	Menu::submenu[number_item-1]->parent_menu = this;
+}
+
+void Menu::set_value_items(char *new_value, int number_item)
+{
+	Menu::value_items[number_item-1] = new_value;
 }
