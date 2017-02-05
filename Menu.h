@@ -9,6 +9,7 @@ class Menu{
 
 		//геттеры
 		char *get_name_menu();
+		// String get_name_menu();
 		char **get_name_items();
 		char **get_value_items();
 		Menu *get_submenu(int number);
@@ -16,8 +17,8 @@ class Menu{
 		Menu *get_parent_menu();
 
 		// void set_parent_menu(Menu *menu);
-		void add_submenu(Menu *submenu, int number_item);
-		void set_value_items(char *new_value, int number_item);
+		void add_submenu(Menu *submenu, int menu_number_item);
+		void set_value_items(char *new_value, int menu_number_item);
 	private:
 		int amount_items;
 		char **name_items;
@@ -25,4 +26,5 @@ class Menu{
 		Menu **submenu;
 		Menu *parent_menu = NULL;
 		char *name_menu;
+		// String name_menu;
 };

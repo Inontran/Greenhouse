@@ -5,10 +5,23 @@
 
 #define NULL (void*)0
 
-U8GLIB_ST7920_128X64_4X u8g(28, 30, 32, 34, 36, 38, 40, 42, 26, 22, 24);   // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7 en=18, di=17,rw=16
-AmperkaKB KB(13, 12, 11, 10, 7, 6, 5, 4);// создаём объект для работы с матричной клавиатурой
+// Улучшаем AnalogRead()
+#define FASTADC 1
+// defines for setting and clearing register bits
+#ifndef cbi
+#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
+#endif
+#ifndef sbi
+#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
+#endif
+
+
+U8GLIB_ST7920_128X64_4X u8g(28, 30, 32, 34, 36, 38, 40, 42, 26, 22, 24);   // 8Bit Com: D0..D7, en, di, rw
+// U8GLIB_ST7920_128X64_4X u8g(34, 36, 38);	// SPI Com: SCK = en = 6, MOSI = rw = 5, CS = di = 4
+
+AmperkaKB KB(14, 15, 16, 17, 18, 19, 20, 21);// создаём объект для работы с матричной клавиатурой
 // Init the DS1302
-DS1302 rtc(50, 51, 52);
+DS1302 rtc(27, 25, 23);
 
 Menu *current_menu;
 int current_number_menu_item = 1;
@@ -30,13 +43,20 @@ void setup()
     rtc.halt(false);
     rtc.writeProtect(false);
 
-    // rtc.setDOW(SATURDAY);        // Set Day-of-Week to FRIDAY
-    // rtc.setTime(14, 31, 10);     // Set the time to 12:00:00 (24hr format)
-    // rtc.setDate(3, 12, 2016);   // Set the date to August 6th, 201
+    // rtc.setDOW(WEDNESDAY);        // Set Day-of-Week to FRIDAY
+    // rtc.setTime(23, 07, 00);     // Set the time to 12:00:00 (24hr format)
+    // rtc.setDate(1, 02, 2017);   // Set the date to August 6th, 201
 }
 
 void loop()
 {
+	#if FASTADC
+	// set prescale to 16
+	sbi(ADCSRA,ADPS2) ;
+	cbi(ADCSRA,ADPS1) ;
+	cbi(ADCSRA,ADPS0) ;
+	#endif
+
 	// определяем нажатие кнопки
 	if (KB.onPress()) {
     	switch (KB.getChar) {
@@ -76,8 +96,6 @@ void loop()
 	do {
 		drawMenu();
 	} while( u8g.nextPage() );
-
-	
 }
 
 //инициализация меню
@@ -93,7 +111,6 @@ void init_menu()
  	menu_name_items[1] = "data";
  	menu_name_items[2] = "settings";
  	current_menu = new Menu("main menu", amount_items, menu_name_items);
- 	delete [] menu_name_items;
 
 
 	//остальные подменю
@@ -107,10 +124,7 @@ void init_menu()
 	menu_value_items[1] = "off";
 	submenu = new Menu("actions", amount_items, menu_name_items, menu_value_items);
 	current_menu->add_submenu(submenu, 1);
-	delete [] menu_name_items;
-	delete [] menu_value_items;
-	delete submenu;
-
+	
 	amount_items = 3;
 	menu_name_items = new char *[amount_items];
 	menu_name_items[0] = "time";
@@ -123,9 +137,7 @@ void init_menu()
 	// menu_value_items[2] = rtc.getDOWStr();
 	submenu = new Menu("data", amount_items, menu_name_items);
 	current_menu->add_submenu(submenu, 2);
-	delete [] menu_name_items;
-	// delete [] menu_value_items;
-	delete submenu;
+
 
 	amount_items = current_menu->get_amount_items();
 }
@@ -164,8 +176,11 @@ void drawMenu()
 void update_menu()
 {
 	if(current_menu->get_name_menu() == "data"){
+		current_menu->set_value_items(rtc.getDateStr(), 2);
 		  current_menu->set_value_items(rtc.getTimeStr(), 1);
-		  current_menu->set_value_items(rtc.getDateStr(), 2);
+		  // current_menu->set_value_items(rtc.getDateStr(), 2);
+		  // current_menu->set_value_items(current_time, 1);
+		  // current_menu->set_value_items(current_date, 2);
 		  current_menu->set_value_items(rtc.getDOWStr(), 3);
 	}
 	
