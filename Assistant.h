@@ -10,6 +10,8 @@ class Assistant
 		float get_temperature_water();
 		float get_level_humidity();
 		int get_level_light();
+		
+		bool 
 
 	private:
 		int pin_luxmetr;
@@ -18,6 +20,9 @@ class Assistant
 		int pin_sensor_mist;
 		int pin_sensor_level_water;
 
+		int pin_mistmaker;
+		int pin_phitolamp;
+		int pin_ventilation;
 
 		float get_temperature(int pin_number);
 };
