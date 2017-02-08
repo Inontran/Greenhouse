@@ -2,18 +2,9 @@
 #include <U8glib.h>
 #include <Menu.h>
 #include <DS1302.h>
+#include <Assistant.h>
 
 #define NULL (void*)0
-
-// Улучшаем AnalogRead()
-#define FASTADC 1
-// defines for setting and clearing register bits
-#ifndef cbi
-#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
-#endif
-#ifndef sbi
-#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
-#endif
 
 
 U8GLIB_ST7920_128X64_4X u8g(28, 30, 32, 34, 36, 38, 40, 42, 26, 22, 24);   // 8Bit Com: D0..D7, en, di, rw
@@ -26,6 +17,12 @@ DS1302 rtc(27, 25, 23);
 Menu *current_menu;
 int current_number_menu_item = 1;
 int amount_items;
+
+/* 
+luxmetr, termometr_water, termometr_air, sensor_mist, sensor_level_water;
+mistmaker, phytolamp, ventilation, heating_air;
+*/
+// Assistant assistant();
 
 
 void setup()
@@ -50,13 +47,6 @@ void setup()
 
 void loop()
 {
-	#if FASTADC
-	// set prescale to 16
-	sbi(ADCSRA,ADPS2) ;
-	cbi(ADCSRA,ADPS1) ;
-	cbi(ADCSRA,ADPS0) ;
-	#endif
-
 	// определяем нажатие кнопки
 	if (KB.onPress()) {
     	switch (KB.getChar) {
