@@ -101,6 +101,7 @@ float Assistant::get_temperature(int pin_number)
   unsigned int B = 3950; // Параметр бетта(B) термистора (из datasheet)
   float r_25 = 4700.0;//сопротивление термистора при 25 градусов Цельсия
   float r_d = 10000.0;//сопротивление резистора делителя напряжения
+  float VIN = 5.0;//
   float voltage = analogRead(pin_number) * VIN / 1023.0;//напряжение, получаемое с термистора
   float r_t = voltage * r_d / (VIN - voltage);//сопротивление при температуре t
   float temperature = 1. / ( 1. / (B) * log(r_t / r_25) + 1. / (25. + 273.15) ) - 273.15;

@@ -1,9 +1,10 @@
 #define NULL (void*)0
+#include <Arduino.h>
 
 class Assistant
 {
 	public:
-		Assistant(int luxmetr, int termometr_water, int termometr_air, int sensor_mist, int sensor_level_water, int mistmaker, int phitolamp, int ventilation);
+		Assistant(int luxmetr, int termometr_water, int termometr_air, int sensor_mist, int sensor_level_water, int mistmaker, int phitolamp, int ventilation, int heating_air);
 		~Assistant();
 
 		float get_temperature_air();
