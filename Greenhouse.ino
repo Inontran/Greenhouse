@@ -146,9 +146,13 @@ void drawMenu()
 	w = u8g.getWidth();
 
 	//печать вверху дисплея названия меню
-	d = (w-u8g.getStrWidth( covert_str_to_char(current_menu->get_name_menu()) ))/2;
+	String *str = current_menu->get_name_menu();
+	char *array_char = new char( str->length() );
+	str->toCharArray(array_char, str->length()+1);
+	d = ( w-u8g.getStrWidth( array_char )  )/2;
 	u8g.setDefaultForegroundColor();
-	u8g.drawStr(d, 0, covert_str_to_char(current_menu->get_name_menu()) );
+	u8g.drawStr(d, 0, array_char );
+	delete array_char;
 
 	//печать на дисплей пунктов меню
 	for( i = 0; i < amount_items; i++ ) 
@@ -158,14 +162,24 @@ void drawMenu()
 			u8g.drawBox(0, (i+1)*h+1, w, h);
 			u8g.setDefaultBackgroundColor();
 		}
-		u8g.drawStr(5, (i+1)*h, covert_str_to_char(current_menu->get_name_items()[i]) );
-		u8g.drawStr(w - u8g.getStrWidth( covert_str_to_char(current_menu->get_value_items()[i]) ), (i+1)*h, covert_str_to_char(current_menu->get_value_items()[i]) );
+
+		str = current_menu->get_name_items()[i];
+		array_char = new char( str->length() );
+		str->toCharArray( array_char, str->length()+1 );
+		u8g.drawStr(5, (i+1)*h, array_char );
+		delete array_char;
+
+		str = current_menu->get_value_items()[i];
+		array_char = new char( str->length() );
+		str->toCharArray( array_char, str->length()+1 );
+		u8g.drawStr(w - u8g.getStrWidth( array_char ), (i+1)*h, array_char );
+		delete array_char;
 	}
 }
 
 void update_menu()
 {
-	if(current_menu->get_name_menu() == "data"){
+	if(current_menu->get_name_menu()->equals("data") ){
 		current_menu->set_value_items( new String(rtc.getDateStr()), 2);
 		  current_menu->set_value_items( new String(rtc.getTimeStr()), 1);
 		  // current_menu->set_value_items(rtc.getDateStr(), 2);
