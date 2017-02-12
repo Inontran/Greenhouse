@@ -85,5 +85,5 @@ void Menu::add_submenu(Menu *submenu, int menu_number_item)
 
 void Menu::set_value_items(String *new_value, int menu_number_item)
 {
-	Menu::value_items[menu_number_item-1] = new_value;
+	Menu::value_items[menu_number_item-1] = new String(*new_value);
 }

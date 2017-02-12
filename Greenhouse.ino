@@ -146,9 +146,9 @@ void drawMenu()
 	w = u8g.getWidth();
 
 	//печать вверху дисплея названия меню
-	String *str = current_menu->get_name_menu();
-	char *array_char = new char( str->length() );
-	str->toCharArray(array_char, str->length()+1);
+	String str = *current_menu->get_name_menu();
+	char *array_char = new char;
+	str.toCharArray(array_char, str.length()+1);
 	d = ( w-u8g.getStrWidth( array_char )  )/2;
 	u8g.setDefaultForegroundColor();
 	u8g.drawStr(d, 0, array_char );
@@ -163,15 +163,15 @@ void drawMenu()
 			u8g.setDefaultBackgroundColor();
 		}
 
-		str = current_menu->get_name_items()[i];
-		array_char = new char( str->length() );
-		str->toCharArray( array_char, str->length()+1 );
+		str = *current_menu->get_name_items()[i];
+		array_char = new char;
+		str.toCharArray( array_char, str.length()+1 );
 		u8g.drawStr(5, (i+1)*h, array_char );
 		delete array_char;
 
-		str = current_menu->get_value_items()[i];
-		array_char = new char( str->length() );
-		str->toCharArray( array_char, str->length()+1 );
+		str = *current_menu->get_value_items()[i];
+		array_char = new char;
+		str.toCharArray( array_char, str.length()+1 );
 		u8g.drawStr(w - u8g.getStrWidth( array_char ), (i+1)*h, array_char );
 		delete array_char;
 	}
@@ -179,20 +179,21 @@ void drawMenu()
 
 void update_menu()
 {
+	if(current_menu->get_name_menu()->equals("actions") ){
+		// String *str = new String("ON");
+		// current_menu->set_value_items( new String("on"), 1);
+		// delete str;
+	}
 	if(current_menu->get_name_menu()->equals("data") ){
-		current_menu->set_value_items( new String(rtc.getDateStr()), 2);
-		  current_menu->set_value_items( new String(rtc.getTimeStr()), 1);
-		  // current_menu->set_value_items(rtc.getDateStr(), 2);
-		  // current_menu->set_value_items(current_time, 1);
-		  // current_menu->set_value_items(current_date, 2);
-		  current_menu->set_value_items(new String(rtc.getDOWStr()), 3);
+		String *str = new String(rtc.getTimeStr());
+		current_menu->set_value_items( str, 1);
+		delete str;
+		str = new String(rtc.getDateStr());
+		current_menu->set_value_items( str, 2);
+		delete str;
+		str = new String(rtc.getDOWStr());
+		current_menu->set_value_items( str, 3);
+		delete str;
 	}
 	
-}
-
-char *covert_str_to_char(String *str)
-{
-	char *char_str = new char(str->length());
-	str->toCharArray(char_str, str->length()+1);
-	return char_str;
 }
