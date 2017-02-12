@@ -1,7 +1,5 @@
 #include "Assistant.h"
 
-#define NULL (void*)0
-
 Assistant::Assistant(int luxmetr, int termometr_water, int termometr_air, int sensor_mist, int sensor_level_water, int mistmaker, int phytolamp, int ventilation, int heating_air)
 {
 	Assistant::pin_luxmetr = luxmetr;
@@ -14,6 +12,17 @@ Assistant::Assistant(int luxmetr, int termometr_water, int termometr_air, int se
 	Assistant::pin_phytolamp = phytolamp;
 	Assistant::pin_ventilation = ventilation;
 	Assistant::pin_heating_air = heating_air;
+	
+	//pinMode
+	pinMode(Assistant::pin_mistmaker, OUTPUT);
+	pinMode(Assistant::pin_phytolamp, OUTPUT);
+	pinMode(Assistant::pin_ventilation, OUTPUT);
+	pinMode(Assistant::pin_heating_air, OUTPUT);
+
+	Assistant::mistmaker_status = false;
+	Assistant::phytolamp_status = false;
+	Assistant::ventilation_status = 0;
+	Assistant::heating_air_status = 0;
 }
 
 
@@ -53,44 +62,113 @@ bool Assistant::mist_exists()
 
 void Assistant::power_on_mistmaker()
 {
-	digitalWrite(Assistant::pin_mistmaker, HIGH);
+	if( ! Assistant::mistmaker_status) 
+	{
+		digitalWrite(Assistant::pin_mistmaker, HIGH);
+		mistmaker_status = true;
+	}
 }
 
 void Assistant::power_off_mistmaker()
 {
-	digitalWrite(Assistant::pin_mistmaker, LOW);
+	if(Assistant::mistmaker_status)
+	{
+		digitalWrite(Assistant::pin_mistmaker, LOW);
+		mistmaker_status = false;
+	}
 }
 
 void Assistant::power_on_phytolamp()
 {
-	digitalWrite(Assistant::pin_phytolamp, HIGH);
+	if( ! Assistant::phytolamp_status )
+	{
+		digitalWrite(Assistant::pin_phytolamp, HIGH);
+		phytolamp_status = true;
+	}
 }
 
 void Assistant::power_off_phytolamp()
 {
-	digitalWrite(Assistant::pin_phytolamp, LOW);	
+	if(Assistant::phytolamp_status)
+	{
+		digitalWrite(Assistant::pin_phytolamp, LOW);	
+		phytolamp_status = false;
+	}
 }
 
 void Assistant::power_on_ventilation(int level_power)
 {
-	analogWrite(Assistant::pin_ventilation, level_power);
+	Assistant::ventilation_status = level_power;
+	analogWrite(Assistant::pin_ventilation, Assistant::ventilation_status);
 }
 
 void Assistant::power_off_ventilation()
 {
-	analogWrite(Assistant::pin_ventilation, LOW);
+	Assistant::ventilation_status = 0;
+	analogWrite(Assistant::pin_ventilation, 0);
 }
 
 void Assistant::power_on_heating_air(int level_power)
 {
-	analogWrite(Assistant::pin_heating_air, level_power);
+	Assistant::heating_air_status = level_power;
+	analogWrite(Assistant::pin_heating_air, Assistant::heating_air_status);
 }
 
 void Assistant::power_off_heating_air()
 {
-	analogWrite(Assistant::pin_heating_air, LOW);
+	Assistant::heating_air_status = 0;
+	analogWrite(Assistant::pin_heating_air, 0);
 }
 
+
+bool Assistant::get_mistmaker_status()
+{
+	return Assistant::mistmaker_status;
+}
+
+char *Assistant::get_mistmaker_char_status()
+{
+	if( Assistant::mistmaker_status ) return "ON";
+	else return "OFF";
+}
+
+bool Assistant::get_phytolamp_status()
+{
+	return Assistant::phytolamp_status;
+}
+
+char *Assistant::get_phytolamp_char_status()
+{
+	if( Assistant::phytolamp_status ) return "ON";
+	else return "OFF";
+}
+
+int Assistant::get_ventilation_status()
+{
+	return Assistant::ventilation_status;
+}
+
+String Assistant::percent_ventilation_status()
+{
+	// char *status;
+	int status = map( Assistant::ventilation_status, 0, 255, 0, 100 );
+	String tmp_str(status);
+	tmp_str.concat("%");
+	return tmp_str;
+}
+		
+int Assistant::get_heating_air_status()
+{
+	return Assistant::heating_air_status;
+}
+
+String Assistant::percent_heating_air_status()
+{
+	int status = map( Assistant::heating_air_status, 0, 255, 0, 100 );
+	String tmp_str(status);
+	tmp_str.concat("%");
+	return tmp_str;
+}
 
 
 
@@ -101,6 +179,7 @@ float Assistant::get_temperature(int pin_number)
   unsigned int B = 3950; // Параметр бетта(B) термистора (из datasheet)
   float r_25 = 4700.0;//сопротивление термистора при 25 градусов Цельсия
   float r_d = 10000.0;//сопротивление резистора делителя напряжения
+  float VIN = 5.0;//
   float voltage = analogRead(pin_number) * VIN / 1023.0;//напряжение, получаемое с термистора
   float r_t = voltage * r_d / (VIN - voltage);//сопротивление при температуре t
   float temperature = 1. / ( 1. / (B) * log(r_t / r_25) + 1. / (25. + 273.15) ) - 273.15;

@@ -91,41 +91,41 @@ void loop()
 //инициализация меню
 void init_menu()
 {
-	char **menu_name_items;
-	char **menu_value_items;
+	String **menu_name_items;
+	String **menu_value_items;
 	Menu *submenu;
  	//главное меню
  	amount_items = 3;
- 	menu_name_items = new char *[amount_items];
- 	menu_name_items[0] = "actions";
- 	menu_name_items[1] = "data";
- 	menu_name_items[2] = "settings";
- 	current_menu = new Menu("main menu", amount_items, menu_name_items);
+ 	menu_name_items = new String *[amount_items];
+ 	menu_name_items[0] = new String("actions");
+ 	menu_name_items[1] = new String("data");
+ 	menu_name_items[2] = new String("settings");
+ 	current_menu = new Menu( new String("main menu"), amount_items, menu_name_items);
 
 
 	//остальные подменю
 	amount_items = 2;
-	menu_name_items = new char *[amount_items];
-	menu_name_items[0] = "mist maker";
-	menu_name_items[1] = "lightning";
+	menu_name_items = new String *[amount_items];
+	menu_name_items[0] = new String("mist maker");
+	menu_name_items[1] = new String("lightning");
 	//здесь будет инициализация значений
-	menu_value_items = new char *[amount_items];
-	menu_value_items[0] = "off";
-	menu_value_items[1] = "off";
-	submenu = new Menu("actions", amount_items, menu_name_items, menu_value_items);
+	menu_value_items = new String *[amount_items];
+	menu_value_items[0] = new String("off");
+	menu_value_items[1] = new String("off");
+	submenu = new Menu( new String("actions"), amount_items, menu_name_items, menu_value_items);
 	current_menu->add_submenu(submenu, 1);
 	
 	amount_items = 3;
-	menu_name_items = new char *[amount_items];
-	menu_name_items[0] = "time";
-	menu_name_items[1] = "date";
-	menu_name_items[2] = "DoW";
+	menu_name_items = new String *[amount_items];
+	menu_name_items[0] = new String("time");
+	menu_name_items[1] = new String("date");
+	menu_name_items[2] = new String("DoW");
 	// menu_value_items = new char *[amount_items];
 	// menu_value_items[0] = rtc.getTimeStr();
 	// menu_value_items[1] = rtc.getDateStr();
 	// menu_value_items[0] = rtc.getTimeStr();
 	// menu_value_items[2] = rtc.getDOWStr();
-	submenu = new Menu("data", amount_items, menu_name_items);
+	submenu = new Menu( new String("data"), amount_items, menu_name_items);
 	current_menu->add_submenu(submenu, 2);
 
 
@@ -146,9 +146,9 @@ void drawMenu()
 	w = u8g.getWidth();
 
 	//печать вверху дисплея названия меню
-	d = (w-u8g.getStrWidth(current_menu->get_name_menu()))/2;
+	d = (w-u8g.getStrWidth( covert_str_to_char(current_menu->get_name_menu()) ))/2;
 	u8g.setDefaultForegroundColor();
-	u8g.drawStr(d, 0, current_menu->get_name_menu());
+	u8g.drawStr(d, 0, covert_str_to_char(current_menu->get_name_menu()) );
 
 	//печать на дисплей пунктов меню
 	for( i = 0; i < amount_items; i++ ) 
@@ -158,20 +158,27 @@ void drawMenu()
 			u8g.drawBox(0, (i+1)*h+1, w, h);
 			u8g.setDefaultBackgroundColor();
 		}
-		u8g.drawStr(5, (i+1)*h, current_menu->get_name_items()[i]);
-		u8g.drawStr(w - u8g.getStrWidth(current_menu->get_value_items()[i]), (i+1)*h, current_menu->get_value_items()[i]);
+		u8g.drawStr(5, (i+1)*h, covert_str_to_char(current_menu->get_name_items()[i]) );
+		u8g.drawStr(w - u8g.getStrWidth( covert_str_to_char(current_menu->get_value_items()[i]) ), (i+1)*h, covert_str_to_char(current_menu->get_value_items()[i]) );
 	}
 }
 
 void update_menu()
 {
 	if(current_menu->get_name_menu() == "data"){
-		current_menu->set_value_items(rtc.getDateStr(), 2);
-		  current_menu->set_value_items(rtc.getTimeStr(), 1);
+		current_menu->set_value_items( new String(rtc.getDateStr()), 2);
+		  current_menu->set_value_items( new String(rtc.getTimeStr()), 1);
 		  // current_menu->set_value_items(rtc.getDateStr(), 2);
 		  // current_menu->set_value_items(current_time, 1);
 		  // current_menu->set_value_items(current_date, 2);
-		  current_menu->set_value_items(rtc.getDOWStr(), 3);
+		  current_menu->set_value_items(new String(rtc.getDOWStr()), 3);
 	}
 	
+}
+
+char *covert_str_to_char(String *str)
+{
+	char *char_str = new char(str->length());
+	str->toCharArray(char_str, str->length()+1);
+	return char_str;
 }

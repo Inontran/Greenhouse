@@ -1,10 +1,12 @@
+#include <Arduino.h>
+
 #define NULL (void*)0
 
 class Assistant
 {
 	public:
-		Assistant(int luxmetr, int termometr_water, int termometr_air, int sensor_mist, int sensor_level_water, int mistmaker, int phitolamp, int ventilation);
-		~Assistant();
+		Assistant(int luxmetr, int termometr_water, int termometr_air, int sensor_mist, int sensor_level_water, int mistmaker, int phitolamp, int ventilation, int heating_air);
+		// ~Assistant();
 
 		float get_temperature_air();
 		float get_temperature_water();
@@ -13,6 +15,7 @@ class Assistant
 		bool water_exists();
 		bool mist_exists();
 
+		
 		void power_on_mistmaker();
 		void power_off_mistmaker();
 
@@ -25,6 +28,19 @@ class Assistant
 		void power_on_heating_air(int level_power);
 		void power_off_heating_air();
 
+		
+		bool get_mistmaker_status();
+		char *get_mistmaker_char_status();
+
+		bool get_phytolamp_status();
+		char *get_phytolamp_char_status();
+
+		int get_ventilation_status();
+		String percent_ventilation_status();
+		
+		int get_heating_air_status();
+		String percent_heating_air_status();
+
 	private:
 		int pin_luxmetr;
 		int pin_termometr_water;
@@ -36,6 +52,10 @@ class Assistant
 		int pin_phytolamp;
 		int pin_ventilation;
 		int pin_heating_air;
+
+		bool mistmaker_status, phytolamp_status;
+		int ventilation_status, heating_air_status;
+
 
 		float get_temperature(int pin_number);
 };

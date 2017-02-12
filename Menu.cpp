@@ -2,28 +2,28 @@
 
 // Menu::Menu(){}
 
-Menu::Menu(char *name, int number, char **name_items)
+Menu::Menu(String *name, int number, String **name_items)
 {
 	Menu::name_menu = name;
 	Menu::amount_items = number;
-	Menu::name_items = new char *[number];
+	Menu::name_items = new String *[number];
 	Menu::submenu = new Menu *[number];
-	Menu::value_items = new char *[number];
+	Menu::value_items = new String *[number];
 	for(int i=0; i<number; i++) 
 	{
 		Menu::name_items[i] = name_items[i];
-		Menu::value_items[i] = "";
+		Menu::value_items[i] = new String("");
 		Menu::submenu[i] = NULL;
 	}
 	// Menu *parent_menu = NULL;
 	
 }
-Menu::Menu(char *name, int number, char **name_items, char **value_items)
+Menu::Menu(String *name, int number, String **name_items, String **value_items)
 {
 	Menu::name_menu = name;
 	Menu::amount_items = number;
-	Menu::name_items = new char *[number];
-	Menu::value_items = new char *[number];
+	Menu::name_items = new String *[number];
+	Menu::value_items = new String *[number];
 	for(int i=0; i<number; i++) 
 	{
 		Menu::name_items[i] = name_items[i];
@@ -37,18 +37,18 @@ Menu::~Menu(){}
 
 
 //геттеры
-char *Menu::get_name_menu()
+String *Menu::get_name_menu()
 {
 	return Menu::name_menu;
 }
 
-char **Menu::get_name_items()
+String **Menu::get_name_items()
 {
 	return Menu::name_items;
 }
 
 
-char **Menu::get_value_items()
+String **Menu::get_value_items()
 {
 	return Menu::value_items;
 }
@@ -83,7 +83,7 @@ void Menu::add_submenu(Menu *submenu, int menu_number_item)
  	Menu::submenu[menu_number_item-1]->parent_menu = this;
 }
 
-void Menu::set_value_items(char *new_value, int menu_number_item)
+void Menu::set_value_items(String *new_value, int menu_number_item)
 {
 	Menu::value_items[menu_number_item-1] = new_value;
 }
